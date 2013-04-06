@@ -57,6 +57,32 @@ animate = () ->
 
   renderer.render(scene, camera)
 
+
+onKeydown = (event) ->
+  switch event.keyCode
+    when 87 then do () ->
+      pos = getGridPosition(cube.position)
+      cube.position = gridPosition pos.x-1, pos.z
+    when 83 then do () ->
+      pos = getGridPosition(cube.position)
+      cube.position = gridPosition pos.x+1, pos.z
+    when 68 then do () ->
+      pos = getGridPosition(cube.position)
+      cube.position = gridPosition pos.x, pos.z-1
+    when 65 then do () ->
+      pos = getGridPosition(cube.position)
+      cube.position = gridPosition pos.x, pos.z+1
+
+    else
+      console.log event.keyCode
+
+
+
+
+
 $(document).ready ->
   init()
+
+  document.addEventListener('keydown', onKeydown, false)
+
   animate()
