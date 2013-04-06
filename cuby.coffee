@@ -33,6 +33,10 @@ init = ->
   cube.position = gridPosition 0, 0
   scene.add(cube)
 
+  evilCube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), new THREE.MeshLambertMaterial({color: 0xff0000}))
+  evilCube.position = gridPosition 2, 0
+  scene.add(evilCube)
+
   directionalLight = new THREE.DirectionalLight(0xffffff, 1)
   directionalLight.position.set(90, 75, 75)
   directionalLight.castShadow = true
