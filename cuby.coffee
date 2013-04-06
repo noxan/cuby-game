@@ -3,25 +3,34 @@ renderer = null
 scene = null
 camera = null
 
+gridCount = 13
+cubeSize = 100
+
 startTime = new Date().getTime()
 
+
+getGridPosition = (vector) ->
+  return {x: vector.x/cubeSize, y: 0, z: vector.z/cubeSize}
+
+gridPosition = (x, z) ->
+  new THREE.Vector3(x*cubeSize, cubeSize/2, z*cubeSize)
 
 init = ->
   scene = new THREE.Scene()
 
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000)
-  camera.position.set 750, 900, 750
+  camera.position.set 1000, 1400, 1000
   camera.lookAt(new THREE.Vector3(175, 0, 175))
 
   gridMaterial = new THREE.MeshBasicMaterial({color: 0x222222, wireframe: true})
-  grid = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 15, 15), gridMaterial)
+  grid = new THREE.Mesh(new THREE.PlaneGeometry(100*gridCount, 100*gridCount, gridCount, gridCount), gridMaterial)
   grid.rotation.x = -Math.PI/2
   scene.add(grid)
 
   material = new THREE.MeshLambertMaterial({color: 0x0000ff})
 
-  cube = new THREE.Mesh(new THREE.CubeGeometry(66, 66, 66), material)
-  cube.position.set(0, 33, 0)
+  cube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), material)
+  cube.position = gridPosition 0, 0
   scene.add(cube)
 
   directionalLight = new THREE.DirectionalLight(0xffffff, 1)
