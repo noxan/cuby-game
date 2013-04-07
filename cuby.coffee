@@ -5,6 +5,7 @@ camera = null
 
 gridCount = 13
 cubeSize = 100
+cubeAnimationDuration = 200
 
 
 class GridPosition
@@ -63,6 +64,7 @@ init = ->
   $('body').append(renderer.domElement)
 
 lastTime = new Date().getTime()
+animationTime = 0
 
 animate = () ->
   requestAnimationFrame(animate)
@@ -71,8 +73,21 @@ animate = () ->
   lastTime = new Date().getTime()
 
   if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
-    cube.position = cube.targetPosition.toVector3()
-    cube.gridPosition = cube.targetPosition.clone()
+    if animationTime < cubeAnimationDuration
+      targetPosition = cube.targetPosition.toVector3()
+
+      progressTime = animationTime / cubeAnimationDuration
+
+      deltaPosition = cube.targetPosition.toVector3().sub(cube.gridPosition.toVector3())
+
+      cube.position = cube.gridPosition.toVector3().add(deltaPosition.multiplyScalar(progressTime))
+
+      animationTime += dt
+    else
+      cube.position = cube.targetPosition.toVector3()
+      cube.gridPosition = cube.targetPosition.clone()
+      animationTime = 0
+
 
   renderer.render(scene, camera)
 
