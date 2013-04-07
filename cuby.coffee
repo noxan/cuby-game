@@ -27,12 +27,6 @@ class GridPosition
     new THREE.Vector3(@x*cubeSize, cubeSize/2, @z*cubeSize)
 
 
-getGridPosition = (vector) ->
-  return {x: vector.x/cubeSize, y: 0, z: vector.z/cubeSize}
-
-calcGridPosition = (x, z) ->
-  new THREE.Vector3(x*cubeSize, cubeSize/2, z*cubeSize)
-
 init = ->
   scene = new THREE.Scene()
 
@@ -48,13 +42,14 @@ init = ->
   material = new THREE.MeshLambertMaterial({color: 0x0000ff})
 
   cube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), material)
-  cube.position = calcGridPosition 0, 0
   cube.gridPosition = new GridPosition 0, 0
+  cube.position = cube.gridPosition.toVector3()
   cube.targetPosition = new GridPosition 0, 0
   scene.add(cube)
 
   evilCube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), new THREE.MeshLambertMaterial({color: 0xff0000}))
-  evilCube.position = gridPosition 2, 0
+  evilCube.gridPosition = new GridPosition 2, 0
+  evilCube.position = evilCube.gridPosition.toVector3()
   scene.add(evilCube)
 
   directionalLight = new THREE.DirectionalLight(0xffffff, 1)
