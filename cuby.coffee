@@ -30,7 +30,7 @@ class GridPosition
 getGridPosition = (vector) ->
   return {x: vector.x/cubeSize, y: 0, z: vector.z/cubeSize}
 
-gridPosition = (x, z) ->
+calcGridPosition = (x, z) ->
   new THREE.Vector3(x*cubeSize, cubeSize/2, z*cubeSize)
 
 init = ->
@@ -48,7 +48,9 @@ init = ->
   material = new THREE.MeshLambertMaterial({color: 0x0000ff})
 
   cube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), material)
-  cube.position = gridPosition 0, 0
+  cube.position = calcGridPosition 0, 0
+  cube.gridPosition = new GridPosition 0, 0
+  cube.targetPosition = new GridPosition 0, 0
   scene.add(cube)
 
   evilCube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), new THREE.MeshLambertMaterial({color: 0xff0000}))
@@ -73,29 +75,25 @@ animate = () ->
 
   t = new Date().getTime() - startTime
 
+  if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
+    cube.position = cube.targetPosition.toVector3()
+    cube.gridPosition = cube.targetPosition.clone()
+
   renderer.render(scene, camera)
 
 
 onKeydown = (event) ->
   switch event.keyCode
     when 87 then do () ->
-      pos = getGridPosition(cube.position)
-      cube.position = gridPosition pos.x-1, pos.z
+      cube.targetPosition.x -= 1
     when 83 then do () ->
-      pos = getGridPosition(cube.position)
-      cube.position = gridPosition pos.x+1, pos.z
+      cube.targetPosition.x += 1
     when 68 then do () ->
-      pos = getGridPosition(cube.position)
-      cube.position = gridPosition pos.x, pos.z-1
+      cube.targetPosition.z -= 1
     when 65 then do () ->
-      pos = getGridPosition(cube.position)
-      cube.position = gridPosition pos.x, pos.z+1
-
+      cube.targetPosition.z += 1
     else
       console.log event.keyCode
-
-
-
 
 
 $(document).ready ->
