@@ -41,6 +41,7 @@ init = ->
   material = new THREE.MeshLambertMaterial({color: 0x0000ff})
 
   cube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), material)
+  cube.moving = false
   cube.gridPosition = new GridPosition 0, 0
   cube.position = cube.gridPosition.toVector3()
   cube.targetPosition = new GridPosition 0, 0
@@ -74,6 +75,8 @@ animate = () ->
 
   if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
     if animationTime < cubeAnimationDuration
+      cube.moving = true
+
       targetPosition = cube.targetPosition.toVector3()
 
       progressTime = animationTime / cubeAnimationDuration
@@ -84,6 +87,7 @@ animate = () ->
 
       animationTime += dt
     else
+      cube.moving = false
       cube.position = cube.targetPosition.toVector3()
       cube.gridPosition = cube.targetPosition.clone()
       animationTime = 0
@@ -95,13 +99,17 @@ animate = () ->
 onKeydown = (event) ->
   switch event.keyCode
     when 87 then do () ->
-      cube.targetPosition.x -= 1
+      if not cube.moving
+        cube.targetPosition.x -= 1
     when 83 then do () ->
-      cube.targetPosition.x += 1
+      if not cube.moving
+        cube.targetPosition.x += 1
     when 68 then do () ->
-      cube.targetPosition.z -= 1
+      if not cube.moving
+        cube.targetPosition.z -= 1
     when 65 then do () ->
-      cube.targetPosition.z += 1
+      if not cube.moving
+        cube.targetPosition.z += 1
     else
       console.log event.keyCode
 
