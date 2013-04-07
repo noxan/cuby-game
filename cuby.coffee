@@ -64,7 +64,7 @@ init = ->
 
   renderer = new THREE.WebGLRenderer({antialias: true})
   renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setClearColorHex(0xEEEEEE, 1.0)
+  renderer.setClearColorHex(0xeeeeee, 1.0)
   renderer.clear()
 
   $('body').append(renderer.domElement)
