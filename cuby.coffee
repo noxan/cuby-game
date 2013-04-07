@@ -9,6 +9,24 @@ cubeSize = 100
 startTime = new Date().getTime()
 
 
+class GridPosition
+  constructor: (@x, @z) ->
+
+  move: (dx, dz) ->
+    @x += dx
+    @z += dz
+
+  clone: () ->
+    return new GridPosition(@x, @z)
+
+  fromVector3: (vector) ->
+    @x = vector.x/cubeSize
+    @z = vector.z/cubeSize
+
+  toVector3: () ->
+    new THREE.Vector3(@x*cubeSize, cubeSize/2, @z*cubeSize)
+
+
 getGridPosition = (vector) ->
   return {x: vector.x/cubeSize, y: 0, z: vector.z/cubeSize}
 
