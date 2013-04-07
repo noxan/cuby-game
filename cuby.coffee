@@ -6,8 +6,6 @@ camera = null
 gridCount = 13
 cubeSize = 100
 
-startTime = new Date().getTime()
-
 
 class GridPosition
   constructor: (@x, @z) ->
@@ -64,11 +62,13 @@ init = ->
 
   $('body').append(renderer.domElement)
 
+lastTime = new Date().getTime()
 
 animate = () ->
   requestAnimationFrame(animate)
 
-  t = new Date().getTime() - startTime
+  dt = new Date().getTime() - lastTime
+  lastTime = new Date().getTime()
 
   if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
     cube.position = cube.targetPosition.toVector3()
