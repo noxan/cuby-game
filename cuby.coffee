@@ -73,6 +73,8 @@ animate = () ->
   dt = new Date().getTime() - lastTime
   lastTime = new Date().getTime()
 
+  controls.update()
+
   if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
     if animationTime < cubeAnimationDuration
       cube.moving = true
@@ -96,27 +98,49 @@ animate = () ->
   renderer.render(scene, camera)
 
 
-onKeydown = (event) ->
-  switch event.keyCode
-    when 87 then do () ->
-      if not cube.moving
+controls =
+  status:
+    back: false
+    forward: false
+    right: false
+    left: false
+  onKeydown: (event) ->
+    switch event.keyCode
+      when 87 then do () ->
+        controls.status.back = true
+      when 83 then do () ->
+        controls.status.forward = true
+      when 68 then do () ->
+        controls.status.right = true
+      when 65 then do () ->
+        controls.status.left = true
+    console.log controls.status
+  onKeyup: (event) ->
+    switch event.keyCode
+      when 87 then do () ->
+        controls.status.back = false
+      when 83 then do () ->
+        controls.status.forward = false
+      when 68 then do () ->
+        controls.status.right = false
+      when 65 then do () ->
+        controls.status.left = false
+  update: ->
+    if not cube.moving
+      if this.status.back
         cube.targetPosition.x -= 1
-    when 83 then do () ->
-      if not cube.moving
+      if this.status.forward
         cube.targetPosition.x += 1
-    when 68 then do () ->
-      if not cube.moving
+      if this.status.right
         cube.targetPosition.z -= 1
-    when 65 then do () ->
-      if not cube.moving
+      if this.status.left
         cube.targetPosition.z += 1
-    else
-      console.log event.keyCode
 
 
 $(document).ready ->
   init()
 
-  document.addEventListener('keydown', onKeydown, false)
+  document.addEventListener('keydown', controls.onKeydown, false)
+  document.addEventListener('keyup', controls.onKeyup, false)
 
   animate()
