@@ -12,9 +12,8 @@ app = express()
 
 app.get '/:script.js', (req, res) ->
   res.header 'Content-Type', 'application/x-javascript'
-  cs = fs.readFileSync "#{__dirname}/coffee/#{req.params.script}.coffee", "ascii"
-  js = coffee.compile cs
-  res.send js
+  coffeeScript = fs.readFileSync "#{__dirname}/coffee/#{req.params.script}.coffee", "ascii"
+  res.send coffee.compile coffeeScript
 
 app.use(express.static('public'))
 
