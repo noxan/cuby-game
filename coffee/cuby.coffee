@@ -129,11 +129,11 @@ controls =
     if not cube.moving
       if this.status.back
         cube.targetPosition.x -= 1
-      if this.status.forward
+      else if this.status.forward
         cube.targetPosition.x += 1
-      if this.status.right
+      else if this.status.right
         cube.targetPosition.z -= 1
-      if this.status.left
+      else if this.status.left
         cube.targetPosition.z += 1
 
 
