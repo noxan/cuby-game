@@ -135,6 +135,9 @@ controls =
         cube.targetPosition.z -= 1
       else if this.status.left
         cube.targetPosition.z += 1
+    maxGridPosition = Math.floor(gridCount/2)
+    if cube.gridPosition.x > maxGridPosition or cube.gridPosition.x < -maxGridPosition or cube.gridPosition.z > maxGridPosition or cube.gridPosition.z < -maxGridPosition
+      console.log "cube out of grid"
 
 
 $(document).ready ->
