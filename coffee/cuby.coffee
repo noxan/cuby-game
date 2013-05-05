@@ -114,7 +114,7 @@ controls =
         controls.status.right = true
       when 65 then do () ->
         controls.status.left = true
-    console.log controls.status
+    #console.log controls.status
   onKeyup: (event) ->
     switch event.keyCode
       when 87 then do () ->
