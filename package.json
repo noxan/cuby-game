@@ -5,6 +5,7 @@
   "author": "Richard Stromer <noxan@byteweaver.org>",
   "dependencies": {
     "coffee-script": ">=1.6.2",
-    "express": ">=3.2.1"
+    "express": ">=3.2.1",
+    "socket.io": "0.9.14"
   }
 }
