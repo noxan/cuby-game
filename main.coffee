@@ -1,6 +1,6 @@
 express = require('express')
 
-coffee = require 'coffee-script'
+coffee = require('coffee-script')
 
 path = require('path')
 url = require('url')
