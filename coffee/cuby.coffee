@@ -7,6 +7,14 @@ gridCount = 13
 cubeSize = 100
 cubeAnimationDuration = 200
 
+rotateAroundObjectAxis = (object, axis, radians) ->
+  rotObjectMatrix = new THREE.Matrix4()
+  rotObjectMatrix.makeRotationAxis(axis.normalize(), radians)
+
+  object.matrix.multiply(rotObjectMatrix)
+
+  object.rotation.setEulerFromRotationMatrix(object.matrix)
+
 
 class GridPosition
   constructor: (@x, @z) ->
@@ -74,6 +82,8 @@ animate = () ->
   lastTime = new Date().getTime()
 
   controls.update()
+
+  rotateAroundObjectAxis(cube, new THREE.Vector3(1, 0, 0), Math.PI / 180)
 
   if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
     if animationTime < cubeAnimationDuration
