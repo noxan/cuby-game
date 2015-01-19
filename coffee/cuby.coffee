@@ -1,4 +1,4 @@
-cube = null
+player = null
 renderer = null
 scene = null
 camera = null
@@ -26,6 +26,26 @@ class GridPosition
     new THREE.Vector3(@x*cubeSize, cubeSize/2, @z*cubeSize)
 
 
+class Player
+  constructor: (@color, @x, @y) ->
+
+
+  animate: () ->
+
+
+
+  getCube: () ->
+    material = new THREE.MeshLambertMaterial({color: @color})
+
+    cube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), material)
+    cube.moving = false
+    cube.gridPosition = new GridPosition @x, @y
+    cube.position = cube.gridPosition.toVector3()
+    cube.targetPosition = new GridPosition @x, @y
+
+    return cube
+
+
 init = ->
   scene = new THREE.Scene()
 
@@ -38,19 +58,11 @@ init = ->
   grid.rotation.x = -Math.PI/2
   scene.add(grid)
 
-  material = new THREE.MeshLambertMaterial({color: 0x0000ff})
+  player = new Player(0x0000ff, 0, 0)
+  scene.add(player.getCube())
 
-  cube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), material)
-  cube.moving = false
-  cube.gridPosition = new GridPosition 0, 0
-  cube.position = cube.gridPosition.toVector3()
-  cube.targetPosition = new GridPosition 0, 0
-  scene.add(cube)
-
-  evilCube = new THREE.Mesh(new THREE.CubeGeometry(cubeSize, cubeSize, cubeSize), new THREE.MeshLambertMaterial({color: 0xff0000}))
-  evilCube.gridPosition = new GridPosition 2, 0
-  evilCube.position = evilCube.gridPosition.toVector3()
-  scene.add(evilCube)
+  enemy = new Player(0xff0000, 2, 0)
+  scene.add(enemy.getCube())
 
   directionalLight = new THREE.DirectionalLight(0xffffff, 1)
   directionalLight.position.set(90, 75, 75)
@@ -74,6 +86,8 @@ animate = () ->
   lastTime = new Date().getTime()
 
   controls.update()
+
+
 
   if cube.targetPosition.x != cube.gridPosition.x || cube.targetPosition.z != cube.gridPosition.z
     if animationTime < cubeAnimationDuration
